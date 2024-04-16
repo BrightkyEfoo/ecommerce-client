@@ -1,5 +1,5 @@
 version: '4'
-name: 'Server Next JS'
+name: next-js-server
 services:
     app:
         build:
