@@ -1,4 +1,3 @@
-version: '4'
 name: next-js-server
 services:
     app:
@@ -8,7 +7,7 @@ services:
         env_file:
             -   .env
         ports:
-            -   '3000:3000'
+            -   '80:3000'
         environment:
             - NODE_ENV=production
         
