@@ -1,0 +1,12 @@
+name: next-js-server
+services:
+    app:
+        image: brightky/ecommerce-client:latest
+        container_name: client-docker
+        env_file:
+            -   .env
+        ports:
+            -   '8080:3000'
+        environment:
+            - NODE_ENV=production
+        

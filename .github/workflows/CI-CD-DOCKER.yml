@@ -1,6 +1,11 @@
 name: 'Try it with docker'
 on:
-    workflow_dispatch: 
+    workflow_dispatch:
+env:
+    NODE_VERSION: '20.x'
+    FOLDER: /home/brightky/applications/e-commerce/client
+    IMAGE: ecommerce-client
+    IMAGE_VERSION: latest
 jobs:
     tests:
         name: tests
@@ -32,4 +37,24 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                   push: true
-                  tags: user/app:latest
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:${{ env.IMAGE_VERSION }}
+    build:
+        name: build and deploy
+        runs-on: ubuntu-latest
+        needs:
+            - tests
+            - copy
+        steps:
+            - name: run docker compose with ssh
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USERNAME }}
+                  port: 22
+                  key: ${{ secrets.KEY }}
+                  script: |
+                        docker compose -f ${{ env.FOLDER }}/docker-compose.yml stop || true
+                        docker compose -f ${{ env.FOLDER }}/docker-compose.yml rm -f || true
+                        docker compose -f ${{ env.FOLDER }}/compose.yml stop || true
+                        docker compose -f ${{ env.FOLDER }}/compose.yml rm -f || true
+                        docker compose -f ${{ env.FOLDER }}/compose.yml up -d
