@@ -9,7 +9,7 @@ const onRequest = async (
 
   return {
     ...config,
-    baseURL : process.env.NEXT_PUBLIC_API_URI,
+    baseURL : `${process.env.NEXT_PUBLIC_API_URI}/api/v1`,
     headers : {
       ...config.headers
     } 
@@ -36,7 +36,7 @@ const onSecureRequest = async (
   }
   return {
     ...config,
-    baseURL : process.env.NEXT_PUBLIC_API_URI,
+    baseURL :  `${process.env.NEXT_PUBLIC_API_URI}/api/v1`,
     headers : {
       ...config.headers,
       Authorization: token

@@ -1,0 +1,14 @@
+version: '4'
+name: 'Server Next JS'
+services:
+    app:
+        build:
+            context: .
+        container_name: client
+        env_file:
+            -   .env
+        ports:
+            -   '3000:3000'
+        environment:
+            - NODE_ENV=production
+        
