@@ -75,6 +75,4 @@ jobs:
                   script: |
                         docker compose -f ${{ env.FOLDER }}/docker-compose.yml stop || true
                         docker compose -f ${{ env.FOLDER }}/docker-compose.yml rm -f || true
-                        docker compose -f ${{ env.FOLDER }}/compose.yml stop || true
-                        docker compose -f ${{ env.FOLDER }}/compose.yml rm -f || true
                         docker compose -f ${{ env.FOLDER }}/docker-compose.yml up -d
