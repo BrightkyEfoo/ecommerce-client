@@ -1,4 +1,5 @@
 "use client";
+import "module-alias/register"
 import React from "react";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
