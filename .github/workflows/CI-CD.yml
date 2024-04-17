@@ -54,7 +54,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
                     rm -R ${{ env.FOLDER }}
-                    cd {{ env.FOLDER }}
+                    cd ${{ env.FOLDER }}
                     git clone https://github.com/BrightkyEfoo/ecommerce-client.git
 
 
