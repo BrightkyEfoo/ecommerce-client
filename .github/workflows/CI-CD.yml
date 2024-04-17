@@ -53,7 +53,7 @@ jobs:
                   key: ${{ secrets.KEY }}
                   script: |
                     cd ${{ env.FOLDER }}
-                    git clone https://github.com/BrightkyEfoo/ecommerce-client.git
+                    git clone https://github.com/BrightkyEfoo/ecommerce-client.git .
 
 
     build:
