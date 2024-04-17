@@ -45,12 +45,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Get changed files
-              id: changed-files
-              uses: tj-actions/changed-files@v35
-              with:
-                  since_last_remote_commit: true
-                  separator: ","
             - name: copy files on server VPS
               uses: appleboy/scp-action@v0.1.7
               with:
@@ -58,7 +52,7 @@ jobs:
                   username: ${{ secrets.USERNAME }}
                   port: 22
                   key: ${{ secrets.KEY }}
-                  source: ${{ steps.changed-files.outputs.all_changed_files }}
+                  source: .
                   target: ${{ env.FOLDER }}
     build:
         name: build and deploy
