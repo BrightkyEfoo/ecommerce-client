@@ -39,21 +39,25 @@ jobs:
             - run: npm test
 
     copy:
-        name: copy-files
+        name: copy-files-from-git
         runs-on: ubuntu-latest
         needs: create-folder
         steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: copy files on server VPS
-              uses: appleboy/scp-action@v0.1.7
+            - name: run docker compose with ssh
+              uses: appleboy/ssh-action@v1.0.3
               with:
                   host: ${{ secrets.HOST }}
                   username: ${{ secrets.USERNAME }}
                   port: 22
                   key: ${{ secrets.KEY }}
-                  source: .
-                  target: ${{ env.FOLDER }}
+                  script: |
+            - name: Checkout
+              uses: actions/checkout@v4
+                    rm -R ${{ env.FOLDER }}
+                    cd {{ env.FOLDER }}
+                    git clone https://github.com/BrightkyEfoo/ecommerce-client.git
+
+
     build:
         name: build and deploy
         runs-on: ubuntu-latest
