@@ -22,6 +22,7 @@ jobs:
                   username: ${{ secrets.USERNAME }}
                   key: ${{ secrets.KEY }}
                   script: |
+                    rm -R ${{ env.FOLDER }}
                     mkdir -p  ${{ env.FOLDER }}
     tests:
         name: tests
@@ -51,9 +52,6 @@ jobs:
                   port: 22
                   key: ${{ secrets.KEY }}
                   script: |
-            - name: Checkout
-              uses: actions/checkout@v4
-                    rm -R ${{ env.FOLDER }}
                     cd ${{ env.FOLDER }}
                     git clone https://github.com/BrightkyEfoo/ecommerce-client.git
 
