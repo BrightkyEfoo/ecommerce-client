@@ -20,6 +20,9 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 If you want run prod server make sure you get docker in your machine and run the commande :
+make sure that your port 80 on your machine is free to use.
+
+If not, edit the docker-compose file [here](docker-compose.yml) and then change the 80 with the new port you want use at the line 9
 ```bash
 docker compose up -d
 ```
