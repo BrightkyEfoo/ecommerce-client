@@ -1,6 +1,9 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ecommerce Web App FRONTEND
 
 ## Getting Started
+
+### Prerequisites
+Make sure you have an instance of [api-server](https://github.com/BrightkyEfoo/ecommerce-server) which is running
 
 First, run the development server:
 
@@ -16,21 +19,38 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If you want run prod server make sure you get docker in your machine and run the commande :
+```bash
+docker compose up -d
+```
+And then open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## SiteMap
 
-To learn more about Next.js, take a look at the following resources:
+| NAME                   | URL-PATTERN                         | EXAMPLE                                                  | AVAILABILITY |
+|------------------------|-------------------------------------|----------------------------------------------------------|--------------|
+| home                   | /                                   |                                                          | available    |
+| products               | /products                           |                                                          | available    |
+| one product            | /products/:product-slug             | /products/661d45f1b5d23b69bd88a89a                       | available    |
+| categories             | /categories                         |                                                          | available    |
+| one category           | /categories/:category-slug          | /categories/Networking-661d4730d9f85cc146ddb87d          | available    |
+| products of a category | /categories/:category-slug/products | /categories/Networking-661d4730d9f85cc146ddb87d/products | available    |
+| login                  | /auth/login                         |                                                          | available    |
+| register               | /auth/register                      |                                                          | available    |
+| cart                   | /dashboard/cart                     |                                                          | available    |
+| profile                | /dashboard/profile                  |                                                          | unavailable  |
+| dashboard              | /dashboard                          |                                                          | unavailable  |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployed version
+The website is available online [here](http://5.189.158.182)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Credentials
+If you want to use application with an account you can register or directly use admin credentials
 
-## Deploy on Vercel
+| EMAIL                 | PASSWORD     |
+|-----------------------|--------------|
+| brightefoo@gmail.com  | brightkyefoo |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`@BrightkyEfoo`
