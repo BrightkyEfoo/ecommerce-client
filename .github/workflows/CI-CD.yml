@@ -6,9 +6,6 @@ env:
     IMAGE_VERSION: latest
 on:
     workflow_dispatch:
-    push:
-        branches:
-            - main
 jobs:
     create-folder:
         name: Create folder
