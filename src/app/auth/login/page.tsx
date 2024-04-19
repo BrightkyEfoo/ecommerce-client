@@ -2,7 +2,7 @@
 import { context } from "@/context/ApplicationContext";
 import { axiosOpenedInstance } from "@/utils/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Chip, Input } from "@nextui-org/react";
 import classNames from "classnames";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
@@ -13,6 +13,7 @@ import { FaEnvelope, FaEye, FaLock } from "react-icons/fa6";
 import { useMutation } from "react-query";
 import { HashLoader } from "react-spinners";
 import { z } from "zod";
+import Link from 'next/link'
 
 const schema = z.object({
 	email: z.string().email("Invalid email"),
@@ -60,7 +61,7 @@ const LoginPage = () => {
 			toast.success("Login successful! Redirecting...");
 			localStorage.setItem("user", JSON.stringify(data.user));
 			localStorage.setItem("token", JSON.stringify(data.token));
-			dispatch({ type: "set_user", payload: data });
+			dispatch({ type: "set_user", payload: data.user });
 			router.push("/");
 		},
 	});
@@ -119,6 +120,15 @@ const LoginPage = () => {
 						}
 					/>
 				</div>
+				<div className={'flex items-center justify-between'}>
+					<span>forgotten password ? </span>
+					<div className={'text-blue-500 cursor-not-allowed relative mr-5'} href={'/auth/register'} >
+						Retrieve password
+						<div className={"absolute -top-5 -right-5"}>
+                            <Chip size={'sm'} >SOON</Chip>
+						</div>
+					</div>
+				</div>
 				<div>
 					<Input
 						size={"lg"}
@@ -160,6 +170,10 @@ const LoginPage = () => {
 						LOG IN
 					</Button>
 				</div>
+				<p className={'flex items-center justify-between'}>
+					<span>You don't have an account ? </span>
+                    <Link className={'text-blue-500'} href={'/auth/register'} >Sign up</Link>
+				</p>
 			</form>
 		</div>
 	);

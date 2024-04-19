@@ -5,9 +5,15 @@ import ProductsSection from "@/components/sections/ProductsSection";
 import { useQuery } from "react-query";
 import { axiosOpenedInstance } from "@/utils/axios";
 import Category, { ICategory } from "@/components/cards/Category";
+import toast from "react-hot-toast";
+import { Kbd } from "@nextui-org/react";
+import { useEffect } from "react";
 
 export default function Home() {
 	useTitle("Ecommerce App");
+	useEffect(() => {
+		toast(<div>press <Kbd keys={["command"]}>K</Kbd> at anytime to make a search</div>)
+	}, []);
 	const categoriesView = useQuery({
 		queryKey: ["categories"],
 		queryFn: async () => {
@@ -15,6 +21,7 @@ export default function Home() {
 			return res.data.categories as ICategory[];
 		},
 	});
+
 	return (
 		<main className="container mx-auto space-y-10">
 			<div className="relative text-center" id="hero">
@@ -36,7 +43,6 @@ export default function Home() {
 				</video>
 				<div className=" z-5 space-y-5 relative py-[200px] h-full w-full top-0 left-0 bottom-0 right-0 bg-black/70">
 					<h1 className="text-[82px] max-w-[85%] mx-auto">
-						Ton cul borel
 						Hey! You. Ohh you need something BUY IT RIGHT NOWWWWW
 					</h1>
 					<p className="max-w-[46.66%] mx-auto text-center text-lg text-gray-400">

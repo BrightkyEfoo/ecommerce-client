@@ -1,5 +1,6 @@
+"use client"
 import Logo from "../Logo";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
 	Navbar,
 	NavbarBrand,
@@ -34,6 +35,11 @@ export default function App() {
 		dispatch({ type: "set_user", payload: null });
 		router.push("/auth/login");
 	};
+
+	useEffect(() => {
+		console.log('state' , state)
+
+		}, [state]);
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
 	const menuItems = ["products", "categories"];
@@ -72,16 +78,19 @@ export default function App() {
 					<>
 						<Tooltip
 							placement={"bottom"}
-							content={<div>No product yet</div>}
+							content={Object.keys(state.cart || {}).length ? <div>See your cart</div> : <div>No product yet</div>}
 							color="secondary"
 						>
-							<NavbarItem className="flex cursor-pointer">
+							<NavbarItem
+								className="flex cursor-pointer"
+								onClick={() =>{
+											router.push("/dashboard/cart")
+										}}
+								>
 								<Badge
-									onClick={() =>
-										router.push("/dashboard/cart")
-									}
+
 									color="danger"
-									content={50}
+									content={Object.keys(state.cart || {}).length || undefined}
 									shape="circle"
 								>
 									<FaCartShopping size={30} />
@@ -101,6 +110,12 @@ export default function App() {
 									/>
 								</DropdownTrigger>
 								<DropdownMenu aria-label="Static Actions">
+									<DropdownItem
+										as={'p'}
+										className={'text-center uppercase'}
+									>
+										{`${state.user.firstName} ${state.user.lastName}` }
+									</DropdownItem>
 									<DropdownItem
 										as={Link}
 										href="/dashboard"

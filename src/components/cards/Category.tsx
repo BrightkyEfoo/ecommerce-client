@@ -1,3 +1,4 @@
+"use client"
 import {
 	Accordion,
 	AccordionItem,
@@ -6,6 +7,8 @@ import {
 	CardFooter,
 	Image,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import slugify from "slugify";
 
 export interface ICategory {
 	title: string;
@@ -15,6 +18,7 @@ export interface ICategory {
 }
 
 export default function Category({ category }: { category: ICategory }) {
+	const router = useRouter()
 	return (
 		<Card isFooterBlurred radius="lg" className="border-none h-[350px]">
 			<Image
@@ -39,6 +43,7 @@ export default function Category({ category }: { category: ICategory }) {
 								color="default"
 								radius="lg"
 								size="sm"
+								onClick={() => router.push(`/categories/${slugify(category.title)}-${category._id}`)}
 							>
 								View more
 							</Button>

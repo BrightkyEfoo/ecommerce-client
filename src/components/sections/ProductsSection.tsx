@@ -1,6 +1,8 @@
 import { axiosOpenedInstance } from "@/utils/axios";
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react";
 import { useQuery } from "react-query";
+import { useRouter } from "next/navigation";
+import slugify from "slugify";
 
 export interface IProduct {
 	discountPercentage: number;
@@ -17,6 +19,7 @@ export interface IProduct {
 }
 
 export default function ProductsSection() {
+	const router = useRouter()
 	const productsView = useQuery({
 		queryKey: ["products"],
 		queryFn: async () => {
@@ -25,6 +28,10 @@ export default function ProductsSection() {
 			return res.data.products as IProduct[];
 		},
 	});
+
+	const goProduct = (product : IProduct) => () => {
+		router.push(`/products/${slugify(product.title)}-${product._id}`)
+	}
 	return productsView.data ? (
 		<div className="py-[80px] bg-black">
 			<h2 className="text-center text-3xl my-6">Our top Sales</h2>
@@ -36,6 +43,7 @@ export default function ProductsSection() {
 					<Card
 						className="col-span-12 sm:col-span-4 h-[300px] border-2 border-slate-200/45"
 						key={product._id}
+						onClick={goProduct(product)}
 					>
 						<CardHeader className="absolute z-10 top-1 flex-col !items-start">
 							<p className="text-tiny text-white/60 uppercase font-bold">
@@ -84,6 +92,7 @@ export default function ProductsSection() {
 							color="primary"
 							radius="full"
 							size="sm"
+							onClick={goProduct(productsView.data[3])}
 						>
 							View more
 						</Button>
@@ -129,7 +138,12 @@ export default function ProductsSection() {
 								</p>
 							</div>
 						</div>
-						<Button radius="full" className="px-6" size="sm">
+						<Button
+							radius="full"
+							className="px-6"
+							size="sm"
+							onClick={goProduct(productsView.data[3])}
+						>
 							View more
 						</Button>
 					</CardFooter>

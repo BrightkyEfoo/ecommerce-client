@@ -101,7 +101,7 @@ export default function Search() {
 								/>
 							</ModalBody>
 							<ModalFooter>
-								<div className="grid gap-4">
+								<div className="grid gap-4 !w-full">
 									{searchMutation.data?.map((product) => {
 										return (
 											<p

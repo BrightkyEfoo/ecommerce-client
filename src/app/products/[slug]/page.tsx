@@ -7,10 +7,11 @@ import { useTitle } from "@/hooks/useTitle";
 import { axiosOpenedInstance } from "@/utils/axios";
 import { Button, Chip, Image } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { useQuery } from "react-query";
+import classNames from "classnames";
 
 const Product = () => {
 	const params = useParams();
@@ -31,7 +32,11 @@ const Product = () => {
 	useTitle(productQuery.data?.title || "Loading...");
 
 	const [quantity, setQuantity] = useState(1);
-
+	useEffect(() => {
+		if(state.cart){
+			setQuantity(state.cart[productQuery.data?._id]?.quantity ||1)
+		}
+	}, [productQuery.data , state.cart]);
 	return productQuery.data ? (
 		<div className="container mx-auto">
 			<div className="flex gap-[100px] my-12">
@@ -52,7 +57,7 @@ const Product = () => {
 									alt="thumb"
 									height={70}
 									width={150}
-									className="h-[70px] w-[150px] object-cover rounded-lg border-2 border-slate-300 cursor-pointer hover:border-blue-500 transition-all"
+									className={classNames("h-[70px] w-[150px] object-cover rounded-lg border-2 border-slate-300 cursor-pointer hover:border-blue-500 transition-all" , {"!border-blue-500" : actualImage === image})}
 									onClick={() => setActualImage(image)}
 								/>
 							);

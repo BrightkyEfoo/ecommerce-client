@@ -10,14 +10,15 @@ import { Toaster } from "react-hot-toast";
 import Wrapper from "@/context/ApplicationContext";
 import Search from "@/components/Search";
 
+
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	// const {state , dispatch}
 	const router = useRouter();
 	const queryClient = new QueryClient();
+
 	return (
 		<html lang="en" className={"dark"}>
 			<QueryClientProvider client={queryClient}>

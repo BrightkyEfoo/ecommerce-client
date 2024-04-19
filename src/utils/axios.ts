@@ -46,6 +46,6 @@ const onSecureRequest = async (
 const onSecureRequestError = (error: AxiosError): Promise<AxiosError> => {
   return Promise.reject(error);
 };
-axiosOpenedInstance.interceptors.request.use(onSecureRequest as any, onSecureRequestError);
+axiosSecuredInstance.interceptors.request.use(onSecureRequest as any, onSecureRequestError);
 
 export { axiosOpenedInstance, axiosSecuredInstance };
