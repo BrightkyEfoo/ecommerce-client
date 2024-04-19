@@ -24,18 +24,12 @@ export const getFormattedTime = (entry: Date) => {
 };
 
 const getWeekNumber = (entry: Date) => {
-  // Copy date so don't modify original
   const date = new Date(
     Date.UTC(entry.getFullYear(), entry.getMonth(), entry.getDate())
   );
-  // Set to nearest Thursday: current date + 4 - current day number
-  // Make Sunday's day number 7
   date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
-  // Get first day of year
   const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
-  // Calculate full weeks to nearest Thursday
   return Math.ceil(((Number(date) - Number(yearStart)) / 86400000 + 1) / 7);
-  // Return array of year and week number
 };
 export const days = ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."];
 export const months = [
