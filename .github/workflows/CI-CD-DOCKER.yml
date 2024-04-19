@@ -1,6 +1,9 @@
 name: 'Try it with docker'
 on:
     workflow_dispatch:
+    push:
+        branches:
+            - main
 env:
     NODE_VERSION: '20.x'
     FOLDER: /home/brightky/applications/e-commerce/client
