@@ -4,11 +4,12 @@ import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import { IProduct } from "@/components/sections/ProductsSection";
 import {Image} from '@nextui-org/react'
 import { useRouter } from "next/navigation";
+import slugify from 'slugify';
 const ProductSmallCard = ({product} : {product : IProduct}) => {
 
   const router = useRouter()
   return (
-    <Card shadow="sm" isPressable onPress={() => router.push(`/products/${product._id}`)}>
+    <Card shadow="sm" isPressable onPress={() => router.push(`/products/${slugify(product.title)}-${product._id}`)}>
       <CardBody className="overflow-visible p-0">
         <Image
           shadow="sm"
