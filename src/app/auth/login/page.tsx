@@ -122,7 +122,7 @@ const LoginPage = () => {
 				</div>
 				<div className={'flex items-center justify-between'}>
 					<span>forgotten password ? </span>
-					<div className={'text-blue-500 cursor-not-allowed relative mr-5'} href={'/auth/register'} >
+					<div className={'text-blue-500 cursor-not-allowed relative mr-5'} >
 						Retrieve password
 						<div className={"absolute -top-5 -right-5"}>
                             <Chip size={'sm'} >SOON</Chip>
@@ -171,7 +171,7 @@ const LoginPage = () => {
 					</Button>
 				</div>
 				<p className={'flex items-center justify-between'}>
-					<span>You don't have an account ? </span>
+					<span>You don&apos;t have an account ? </span>
                     <Link className={'text-blue-500'} href={'/auth/register'} >Sign up</Link>
 				</p>
 			</form>
