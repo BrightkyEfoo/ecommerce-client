@@ -1,11 +1,12 @@
 "use client";
-import { context } from "@/context/ApplicationContext";
 import { axiosOpenedInstance } from "@/utils/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import classNames from "classnames";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaEyeSlash } from "react-icons/fa";
@@ -13,75 +14,72 @@ import { FaEnvelope, FaEye, FaLetterboxd, FaLock } from "react-icons/fa6";
 import { useMutation } from "react-query";
 import { HashLoader } from "react-spinners";
 import { z } from "zod";
-import Image from "next/image";
-import Link from "next/link";
 
-const schema = z.object({
-    firstName : z.string().trim().min(4),
-    lastName : z.string().trim().min(4),
-    email: z.string().trim().email("Invalid email"),
-	password: z
-		.string()
-		.min(6, "Password too short - should be more than 6 chars"),
-    rePassword: z
-            .string()
-}).refine(
-    (values) => {
-        return values.password === values.rePassword;
-    },
-    {
-        message: "Passwords must match!",
-        path: ["rePassword"],
-    }
-)
-
-
+const schema = z
+	.object({
+		firstName: z.string().trim().min(4),
+		lastName: z.string().trim().min(4),
+		email: z.string().trim().email("Invalid email"),
+		password: z
+			.string()
+			.min(6, "Password too short - should be more than 6 chars"),
+		rePassword: z.string(),
+	})
+	.refine(
+		(values) => {
+			return values.password === values.rePassword;
+		},
+		{
+			message: "Passwords must match!",
+			path: ["rePassword"],
+		}
+	);
 
 const RegisterPage = () => {
-	const { dispatch } = useContext(context);
 	const router = useRouter();
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 	} = useForm({
-		defaultValues: {
-			email: "",
-			password: "",
-		},
 		resolver: zodResolver(schema),
 	});
-    const [isVisible, setIsVisible] = useState(false);
-    const [isRepasswordVisible, setIsRePasswordVisible] = useState(false);
-    const [image , setImage] = useState<File>()
-    const fileRef = useRef<HTMLInputElement>(null)
+	const [isVisible, setIsVisible] = useState(false);
+	const [isRepasswordVisible, setIsRePasswordVisible] = useState(false);
+	const [image, setImage] = useState<File>();
+	const fileRef = useRef<HTMLInputElement>(null);
 
-    const signup = async (data : any) => {
-        const dataToSend = new FormData()
-        const body = {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            password: data.password
-        }
+	const signup = async (data: any) => {
+		const dataToSend = new FormData();
+		const body = {
+			firstName: data.firstName,
+			lastName: data.lastName,
+			email: data.email,
+			password: data.password,
+		};
 
-        dataToSend.append('body' , JSON.stringify(body))
+		dataToSend.append("body", JSON.stringify(body));
+		if (!image) {
+			throw new Error("Please select a profile picture");
+		}
+		dataToSend.append("profilePicture", image);
+		const registerRes = await axiosOpenedInstance.post(
+			"/users/auth/register",
+			dataToSend
+		);
+		return registerRes.data;
+	};
 
-        dataToSend.append('profilePicture' , image)
-        const registerRes = await axiosOpenedInstance.post("/users/auth/register", dataToSend);
-        return registerRes.data;
-    };
-
-    const mutation = useMutation({
-        mutationFn: signup,
-        onError: () => {
-            toast.error("Register failed. Please try again");
-        },
-        onSuccess: (data) => {
-            toast.success("Register successful! Redirecting...");
-            router.push("/auth/login");
-        },
-    });
+	const mutation = useMutation({
+		mutationFn: signup,
+		onError: () => {
+			toast.error("Register failed. Please try again");
+		},
+		onSuccess: () => {
+			toast.success("Register successful! Redirecting...");
+			router.push("/auth/login");
+		},
+	});
 
 	const onSubmit = (data: any) => {
 		console.log("data", data);
@@ -91,11 +89,10 @@ const RegisterPage = () => {
 		console.log("any", err);
 	};
 
-
-
-    const toggleVisibility = () => setIsVisible(!isVisible);
-    const toggleRepasswordVisibility = () => setIsRePasswordVisible(!isRepasswordVisible);
-    console.log("mutation.isLoading", mutation.isLoading);
+	const toggleVisibility = () => setIsVisible(!isVisible);
+	const toggleRepasswordVisibility = () =>
+		setIsRePasswordVisible(!isRepasswordVisible);
+	console.log("mutation.isLoading", mutation.isLoading);
 
 	return (
 		<div
@@ -123,40 +120,40 @@ const RegisterPage = () => {
 						color="#4285F4"
 					/>
 				</div>
-                <div className={'grid gap-5 grid-cols-2'}>
-                    <Input
-                        size={"lg"}
-                        startContent={
-                            <FaLetterboxd className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                        }
-                        type="text"
-                        label="firstName"
-                        placeholder="Enter your firstName"
-                        {...register("firstName")}
-                        isInvalid={errors.firstName ? true : false}
-                        errorMessage={
-                            errors.firstName
-                            ? "Please fill here a valid firstName"
-                            : undefined
-                        }
-                    />
-                    <Input
-                        size={"lg"}
-                        startContent={
-                            <FaLetterboxd className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                        }
-                        type="text"
-                        label="lastName"
-                        placeholder="Enter your lastName"
-                        {...register("lastName")}
-                        isInvalid={errors.lastName ? true : false}
-                        errorMessage={
-                            errors.lastName
-                            ? "Please fill here a valid lastName"
-                            : undefined
-                        }
-                    />
-                </div>
+				<div className={"grid gap-5 grid-cols-2"}>
+					<Input
+						size={"lg"}
+						startContent={
+							<FaLetterboxd className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
+						}
+						type="text"
+						label="firstName"
+						placeholder="Enter your firstName"
+						{...register("firstName")}
+						isInvalid={errors.firstName ? true : false}
+						errorMessage={
+							errors.firstName
+								? "Please fill here a valid firstName"
+								: undefined
+						}
+					/>
+					<Input
+						size={"lg"}
+						startContent={
+							<FaLetterboxd className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
+						}
+						type="text"
+						label="lastName"
+						placeholder="Enter your lastName"
+						{...register("lastName")}
+						isInvalid={errors.lastName ? true : false}
+						errorMessage={
+							errors.lastName
+								? "Please fill here a valid lastName"
+								: undefined
+						}
+					/>
+				</div>
 				<div>
 					<Input
 						size={"lg"}
@@ -167,109 +164,135 @@ const RegisterPage = () => {
 						label="Email"
 						placeholder="Enter your email"
 						{...register("email")}
-                        isInvalid={errors.email ? true : false}
-                        errorMessage={
-                            errors.email
-                                ? "Please fill here a valid email address"
-                                : undefined
-                        }
-                    />
-                </div>
+						isInvalid={errors.email ? true : false}
+						errorMessage={
+							errors.email
+								? "Please fill here a valid email address"
+								: undefined
+						}
+					/>
+				</div>
 
-                <div>
-                    <Input
-                        size={"lg"}
-                        startContent={
-                            <FaLock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                        }
-                        endContent={
-                            <button
-                                className="focus:outline-none"
-                                type="button"
-                                onClick={toggleVisibility}
-                            >
-                                {isVisible ? (
-                                    <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
-                                ) : (
-                                    <FaEye className="text-2xl text-default-400 pointer-events-none" />
-                                )}
-                            </button>
-                        }
-                        type={isVisible ? "text" : "password"}
-                        label="Password"
-                        placeholder="Enter your password"
-                        {...register("password")}
-                        isInvalid={errors.password ? true : false}
-                        errorMessage={
-                            errors.password
-                                ? "Please fill here a valid password, it should have at least 6 characters"
-                                : undefined
-                        }
-                    />
-                </div>
-                <div>
-                    <Input
-                        size={"lg"}
-                        startContent={
-                            <FaLock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                        }
-                        endContent={
-                            <button
-                                className="focus:outline-none"
-                                type="button"
-                                onClick={toggleRepasswordVisibility}
-                            >
-                                {isRepasswordVisible ? (
-                                    <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
-                                ) : (
-                                    <FaEye className="text-2xl text-default-400 pointer-events-none" />
-                                )}
-                            </button>
-                        }
-                        type={isRepasswordVisible ? "text" : "password"}
-                        label="rePassword"
-                        placeholder="Retype your password"
-                        {...register("rePassword")}
-                        isInvalid={!!errors.rePassword}
-                        errorMessage={
-                            errors.rePassword
-                                ? "Please retype your password exactly"
-                                : undefined
-                        }
-                    />
-                </div>
-                <div className='cursor-pointer h-[100px] w-[100px] rounded-[50%] mx-auto overflow-hidden' onClick={()=> fileRef.current?.click()}>
-                    <input type={'file'}
-                        hidden
-                        ref={fileRef}
-                        onChange={e => {
-                            setImage(e.target?.files[0])
-                        }}
-                        accept={'image/png,image/jpeg'}
-                    />
-                    <Image src={image ? URL.createObjectURL(image) : '/images/profilepic.png'} alt={'profilepic'} height={100} width={100} />
-                </div>
-                <div className={'flex items-center justify-center gap-5'}>
-                    <Button onClick={()=> fileRef.current?.click()}>Select an image</Button>
-                    {image ? <Button color={"danger"} onClick={()=> setImage(undefined)}>Remove</Button> : null}
-                </div>
-                <div>
-                    <Button
-                        color="primary"
-                        type="submit"
-                        variant="flat"
-                        className="w-full h-[60px]"
-                    >
-                        SIGN UP
-                    </Button>
-                </div>
-                <p className={'flex items-center justify-between'}>
-                    <span>Already have an account ? </span>
-                    <Link className={'text-blue-500'} href={'/auth/login'} >Login</Link>
-                </p>
-            </form>
-        </div>
-    );
+				<div>
+					<Input
+						size={"lg"}
+						startContent={
+							<FaLock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
+						}
+						endContent={
+							<button
+								className="focus:outline-none"
+								type="button"
+								onClick={toggleVisibility}
+							>
+								{isVisible ? (
+									<FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+								) : (
+									<FaEye className="text-2xl text-default-400 pointer-events-none" />
+								)}
+							</button>
+						}
+						type={isVisible ? "text" : "password"}
+						label="Password"
+						placeholder="Enter your password"
+						{...register("password")}
+						isInvalid={errors.password ? true : false}
+						errorMessage={
+							errors.password
+								? "Please fill here a valid password, it should have at least 6 characters"
+								: undefined
+						}
+					/>
+				</div>
+				<div>
+					<Input
+						size={"lg"}
+						startContent={
+							<FaLock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
+						}
+						endContent={
+							<button
+								className="focus:outline-none"
+								type="button"
+								onClick={toggleRepasswordVisibility}
+							>
+								{isRepasswordVisible ? (
+									<FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+								) : (
+									<FaEye className="text-2xl text-default-400 pointer-events-none" />
+								)}
+							</button>
+						}
+						type={isRepasswordVisible ? "text" : "password"}
+						label="rePassword"
+						placeholder="Retype your password"
+						{...register("rePassword")}
+						isInvalid={!!errors.rePassword}
+						errorMessage={
+							errors.rePassword
+								? "Please retype your password exactly"
+								: undefined
+						}
+					/>
+				</div>
+				<div
+					className="cursor-pointer h-[100px] w-[100px] rounded-[50%] mx-auto overflow-hidden"
+					onClick={() => fileRef.current?.click()}
+				>
+					<input
+						type={"file"}
+						hidden
+						ref={fileRef}
+						onChange={(e) => {
+							if (e.target.files && e.target.files[0]) {
+								setImage(e.target?.files[0]);
+							}
+						}}
+						accept={"image/png,image/jpeg"}
+					/>
+					<Image
+						src={
+							image
+								? URL.createObjectURL(image)
+								: "/images/profilepic.png"
+						}
+						alt={"profilepic"}
+						height={100}
+						width={100}
+					/>
+				</div>
+				<div className={"flex items-center justify-center gap-5"}>
+					<Button onClick={() => fileRef.current?.click()}>
+						Select an image
+					</Button>
+					{image ? (
+						<Button
+							color={"danger"}
+							onClick={() => setImage(undefined)}
+						>
+							Remove
+						</Button>
+					) : null}
+				</div>
+				<div>
+					<Button
+						color="primary"
+						type="submit"
+						variant="flat"
+						className="w-full h-[60px]"
+					>
+						SIGN UP
+					</Button>
+				</div>
+				<p className={"flex items-center justify-between"}>
+					<span>Already have an account ? </span>
+					<Link className={"text-blue-500"} href={"/auth/login"}>
+						Login
+					</Link>
+				</p>
+			</form>
+		</div>
+	);
 };
 
 export default RegisterPage;
