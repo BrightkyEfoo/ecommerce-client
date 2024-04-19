@@ -1,5 +1,5 @@
 # Ecommerce Web App FRONTEND
-
+  You can go to the root repository project [here](https://github.com/BrightkyEfoo/ecommerce)
 ## Getting Started
 
 ### Prerequisites
