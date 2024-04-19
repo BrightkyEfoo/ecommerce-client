@@ -1,7 +1,8 @@
 name: next-js-server
 services:
     app:
-        build: .
+        build: 
+            context: .
         container_name: client-docker
         env_file:
             -   .env
