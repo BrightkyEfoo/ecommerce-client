@@ -33,10 +33,10 @@ const Product = () => {
 
 	const [quantity, setQuantity] = useState(1);
 	useEffect(() => {
-		if(state.cart){
-			setQuantity(state.cart[productQuery.data?._id]?.quantity ||1)
+		if (state.cart && productQuery.data) {
+			setQuantity(state.cart[productQuery.data._id]?.quantity || 1);
 		}
-	}, [productQuery.data , state.cart]);
+	}, [productQuery.data, state.cart]);
 	return productQuery.data ? (
 		<div className="container mx-auto">
 			<div className="flex gap-[100px] my-12">
@@ -57,7 +57,13 @@ const Product = () => {
 									alt="thumb"
 									height={70}
 									width={150}
-									className={classNames("h-[70px] w-[150px] object-cover rounded-lg border-2 border-slate-300 cursor-pointer hover:border-blue-500 transition-all" , {"!border-blue-500" : actualImage === image})}
+									className={classNames(
+										"h-[70px] w-[150px] object-cover rounded-lg border-2 border-slate-300 cursor-pointer hover:border-blue-500 transition-all",
+										{
+											"!border-blue-500":
+												actualImage === image,
+										}
+									)}
 									onClick={() => setActualImage(image)}
 								/>
 							);
