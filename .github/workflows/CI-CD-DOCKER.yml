@@ -43,7 +43,7 @@ jobs:
         runs-on: ubuntu-latest
         needs:
             - tests
-            - copy
+            - docker
         steps:
             - name: run docker compose with ssh
               uses: appleboy/ssh-action@v1.0.3
