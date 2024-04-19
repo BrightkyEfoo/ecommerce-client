@@ -82,17 +82,15 @@ const RegisterPage = () => {
 	});
 
 	const onSubmit = (data: any) => {
-		console.log("data", data);
 		mutation.mutate(data);
 	};
 	const onError = (err: any) => {
-		console.log("any", err);
+		console.error("error", err);
 	};
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
 	const toggleRepasswordVisibility = () =>
 		setIsRePasswordVisible(!isRepasswordVisible);
-	console.log("mutation.isLoading", mutation.isLoading);
 
 	return (
 		<div

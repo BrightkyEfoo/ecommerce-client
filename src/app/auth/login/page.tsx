@@ -67,15 +67,13 @@ const LoginPage = () => {
 	});
 
 	const onSubmit = (data: any) => {
-		console.log("data", data);
 		mutation.mutate(data);
 	};
 	const onError = (err: any) => {
-		console.log("any", err);
+		console.error("any", err);
 	};
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
-	console.log("mutation.isLoading", mutation.isLoading);
 	return (
 		<div
 			className={

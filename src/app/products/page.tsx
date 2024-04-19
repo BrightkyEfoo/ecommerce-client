@@ -15,7 +15,6 @@ const Products = () => {
     queryKey: ["categories" , currentPage],
     queryFn: async () => {
       const res = await axiosOpenedInstance.get(`/products/?page=${currentPage}`);
-      console.log(res)
       setTotalPage(Math.ceil(res.data.total / res.data.limit))
       return res.data.products as IProduct[];
     }

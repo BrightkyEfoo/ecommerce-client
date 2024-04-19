@@ -24,7 +24,6 @@ export default function ProductsSection() {
 		queryKey: ["products"],
 		queryFn: async () => {
 			const res = await axiosOpenedInstance.get("/products/?limit=5");
-			console.log("res.data", res.data);
 			return res.data.products as IProduct[];
 		},
 	});

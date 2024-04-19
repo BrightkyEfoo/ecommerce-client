@@ -1,31 +1,31 @@
-"use client"
-import Logo from "../Logo";
-import React, { useContext, useEffect } from "react";
+"use client";
+import { context } from "@/context/ApplicationContext";
 import {
+	Avatar,
+	Badge,
+	Button,
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
+	Link,
 	Navbar,
 	NavbarBrand,
 	NavbarContent,
 	NavbarItem,
-	NavbarMenuToggle,
 	NavbarMenu,
 	NavbarMenuItem,
-	Link,
-	Button,
-	Dropdown,
-	DropdownTrigger,
-	DropdownMenu,
-	DropdownItem,
-	Avatar,
-	Badge,
+	NavbarMenuToggle,
 	Tooltip,
 } from "@nextui-org/react";
-import { context } from "@/context/ApplicationContext";
 import { useRouter } from "next/navigation";
+import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { FaSignOutAlt } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+import Logo from "../Logo";
 
-export default function App() {
+export default function Header() {
 	const { state, dispatch } = useContext(context);
 	const router = useRouter();
 	const logout = () => {
@@ -36,10 +36,6 @@ export default function App() {
 		router.push("/auth/login");
 	};
 
-	useEffect(() => {
-		console.log('state' , state)
-
-		}, [state]);
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
 	const menuItems = ["products", "categories"];
@@ -49,7 +45,6 @@ export default function App() {
 			onMenuOpenChange={setIsMenuOpen}
 			classNames={{
 				base: "container mx-auto py-4 border-b-2 border-slate-200/50 bg-black",
-
 			}}
 			maxWidth="full"
 			shouldHideOnScroll
@@ -78,19 +73,27 @@ export default function App() {
 					<>
 						<Tooltip
 							placement={"bottom"}
-							content={Object.keys(state.cart || {}).length ? <div>See your cart</div> : <div>No product yet</div>}
+							content={
+								Object.keys(state.cart || {}).length ? (
+									<div>See your cart</div>
+								) : (
+									<div>No product yet</div>
+								)
+							}
 							color="secondary"
 						>
 							<NavbarItem
 								className="flex cursor-pointer"
-								onClick={() =>{
-											router.push("/dashboard/cart")
-										}}
-								>
+								onClick={() => {
+									router.push("/dashboard/cart");
+								}}
+							>
 								<Badge
-
 									color="danger"
-									content={Object.keys(state.cart || {}).length || undefined}
+									content={
+										Object.keys(state.cart || {}).length ||
+										undefined
+									}
 									shape="circle"
 								>
 									<FaCartShopping size={30} />
@@ -111,10 +114,10 @@ export default function App() {
 								</DropdownTrigger>
 								<DropdownMenu aria-label="Static Actions">
 									<DropdownItem
-										as={'p'}
-										className={'text-center uppercase'}
+										as={"p"}
+										className={"text-center uppercase"}
 									>
-										{`${state.user.firstName} ${state.user.lastName}` }
+										{`${state.user.firstName} ${state.user.lastName}`}
 									</DropdownItem>
 									<DropdownItem
 										as={Link}

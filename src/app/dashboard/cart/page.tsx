@@ -24,8 +24,6 @@ const CartPage = () => {
 	const { dispatch, state } = useContext(context);
 	const rows = useMemo(() => {
 		return Object.keys(state.cart || {}).map((key, index) => {
-			console.log("item", state.cart[key]);
-
 			const { product, quantity } = state.cart[key] as {
 				product: IProduct;
 				quantity: number;

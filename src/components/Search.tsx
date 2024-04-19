@@ -35,7 +35,6 @@ export default function Search() {
 
 	useEffect(() => {
 		const handler = (event: KeyboardEvent) => {
-			console.log("event", event.key, event.ctrlKey);
 			if (!isOpen) {
 				if (event.ctrlKey && event.key === "k") {
 					event.preventDefault();
@@ -89,7 +88,6 @@ export default function Search() {
 									placeholder="Type"
 									variant="bordered"
 									onChange={(e) => {
-										console.log("change", e.target.value);
 										setKeyword(e.target.value);
 										if (e.target.value.length > 4) {
 											searchMutation.mutate(

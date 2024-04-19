@@ -22,7 +22,6 @@ const CategoryPage = () => {
 					.split("-")
 					.at(-1)}/products/?page=${currentPage}`
 			);
-			console.log(res);
 			setTotalPage(Math.ceil(res.data.total / res.data.limit));
 			return res.data.products as IProduct[];
 		},
