@@ -41,11 +41,11 @@ export default function Home() {
 						className="h-full w-full object-cover"
 					/>
 				</video>
-				<div className=" z-5 space-y-5 relative py-[200px] h-full w-full top-0 left-0 bottom-0 right-0 bg-black/70">
-					<h1 className="text-[82px] max-w-[85%] mx-auto">
+				<div className=" z-5 space-y-5 relative py-[50px] md:py-[200px] h-full w-full top-0 left-0 bottom-0 right-0 bg-black/70">
+					<h1 className="text-2xl md:leading-[100%] md:text-[82px] max-w-[85%] mx-auto">
 						Hey! You. Ohh you need something BUY IT RIGHT NOWWWWW
 					</h1>
-					<p className="max-w-[46.66%] mx-auto text-center text-lg text-gray-400">
+					<p className="max-w-[90%] md:max-w-[46.66%] mx-auto text-center text-md md:text-lg text-gray-400">
 						Everyday we fight for you, to make your life easy and
 						simple Lorem ipsum dolor sit amet, consectetur
 						adipisicing elit.

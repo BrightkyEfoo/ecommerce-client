@@ -90,8 +90,8 @@ const Product = () => {
 
 	return productQuery.data ? (
 		<div className="container mx-auto">
-			<div className="flex gap-[100px] my-12">
-				<div className="flex flex-col">
+			<div className="flex gap-[100px] my-12 flex-col lg:flex-row">
+				<div className="lg:flex flex-col hidden">
 					<Image
 						src={actualImage}
 						height={500}
@@ -121,7 +121,23 @@ const Product = () => {
 						})}
 					</div>
 				</div>
-				<div className="max-w-[50%]">
+				<div className="flex lg:hidden flex-wrap h-fit justify-center mt-4 gap-5">
+					{productQuery.data.images.slice(0,2).map((image, index) => {
+						return (
+							<Image
+								key={index}
+								src={image}
+								alt="thumb"
+								height={300}
+								width={300}
+								className={classNames(
+									"h-[300px] w-[300px] object-cover rounded-lg border-2 border-slate-300 cursor-pointer hover:border-blue-500 transition-all"
+								)}
+							/>
+						);
+					})}
+				</div>
+				<div className="lg:max-w-[50%]">
 					<h1 className="text-3xl font-bold">
 						{productQuery.data.title}
 					</h1>
@@ -132,7 +148,7 @@ const Product = () => {
 						<Chip>{productQuery.data.stock} items in stock</Chip>
 					</div>
 					<p>{productQuery.data.description}</p>
-					<div className="flex justify-between items-center my-8">
+					<div className="flex flex-col sm:flex-row gap-10 justify-between items-center my-8">
 						<p className="text-5xl">
 							{productQuery.data.discountPercentage ? (
 								<>

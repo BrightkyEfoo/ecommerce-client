@@ -206,7 +206,7 @@ const CartPage = () => {
 
 			<h2 className="my-8 text-center text-3xl font-bold">Your carts</h2>
 			{cartsQuery.data ? (
-				<div className="grid grid-cols-3 mx-auto gap-8 w-fit">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto gap-8 w-fit">
 					{cartsQuery.data.map((cart, index) => {
 						return <Cart key={index} cart={cart} />;
 					})}

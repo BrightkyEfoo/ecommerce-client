@@ -24,7 +24,7 @@ const Products = () => {
       <h1 className={"text-4xl text-center font-bold my-5"}>Our products</h1>
       
       
-      <div className = "grid grid-cols-4 gap-5 my-8">
+      <div className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 my-8">
         {
           productsView.data.map((product , index) => {
             return <ProductSmallCard key={`${product._id}-${index}`} product={product} />

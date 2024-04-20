@@ -20,7 +20,7 @@ export interface ICategory {
 export default function Category({ category }: { category: ICategory }) {
 	const router = useRouter()
 	return (
-		<Card isFooterBlurred radius="lg" className="border-none h-[350px]">
+		<Card isFooterBlurred radius="lg" className="border-none h-[350px] w-fit">
 			<Image
 				removeWrapper
 				alt={category.title}

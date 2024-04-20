@@ -19,7 +19,7 @@ const CategoriesPage = () => {
 			<h1 className={"text-4xl text-center font-bold my-5"}>
 				Our categories
 			</h1>
-			<div className="grid grid-cols-4 gap-5 my-8">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-5 my-8">
 				{categoriesView.data.map((category, index) => {
 					return (
 						<Category

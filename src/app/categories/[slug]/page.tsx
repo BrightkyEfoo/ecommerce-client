@@ -38,7 +38,7 @@ const CategoryPage = () => {
 				Our products of category{" "}
 			</h1>
 
-			<div className="grid grid-cols-4 gap-5 my-8">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 my-8">
 				{productsView.data.map((product, index) => {
 					return (
 						<ProductSmallCard
