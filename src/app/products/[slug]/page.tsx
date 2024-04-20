@@ -7,7 +7,7 @@ import { useTitle } from "@/hooks/useTitle";
 import { axiosOpenedInstance } from "@/utils/axios";
 import { Button, Chip, Image } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { useQuery } from "react-query";
@@ -37,6 +37,47 @@ const Product = () => {
 			setQuantity(state.cart[productQuery.data._id]?.quantity || 1);
 		}
 	}, [productQuery.data, state.cart]);
+
+	const handleAddToCart = () => {
+		if (!state.user) {
+			router.push("/auth/login");
+		} else {
+			dispatch({
+				type: "add_product_to_cart",
+				payload: {
+					product: productQuery.data,
+					quantity,
+				},
+			});
+		}
+	};
+
+	const handleAdd = () => {
+		setQuantity((prev) => {
+			if (!productQuery.data) return prev;
+			if (prev < productQuery.data.stock) {
+				return prev + 1;
+			}
+			return prev;
+		});
+	};
+
+	const handleRemove = () => {
+		setQuantity((prev) => {
+			if (prev > 1) return prev - 1;
+			return prev;
+		});
+	};
+
+	const totalDiscounted = useMemo(() => {
+		if (!productQuery.data) return "0";
+		const disountedPrice =
+			((100 - productQuery.data.discountPercentage) *
+				productQuery.data.price) /
+			100;
+		return disountedPrice.toFixed(2);
+	}, [productQuery.data]);
+
 	return productQuery.data ? (
 		<div className="container mx-auto">
 			<div className="flex gap-[100px] my-12">
@@ -88,15 +129,7 @@ const Product = () => {
 									<span className="text-2xl relative after:left-0 after:border-red after:absolute after:w-full after:h-1 after:border-rose-500 after:border-2 after:-rotate-[25deg] after:top-[50%] translate-y-[-50%] after:z-10">
 										${productQuery.data.price}
 									</span>
-									<span>
-										{" "}
-										$
-										{((100 -
-											productQuery.data
-												.discountPercentage) *
-											productQuery.data.price) /
-											100}{" "}
-									</span>
+									<span> ${totalDiscounted} </span>
 								</>
 							) : (
 								<span>${productQuery.data.price}</span>
@@ -105,50 +138,17 @@ const Product = () => {
 						</p>
 						<div className="flex flex-col items-end gap-3 ">
 							<div className="flex gap-4 items-center pb-4 border-dashed border-b-2 border-b-slate-300 w-full justify-end">
-								<Button
-									color="danger"
-									onClick={() => {
-										setQuantity((prev) => {
-											if (prev > 1) return prev - 1;
-											return prev;
-										});
-									}}
-								>
+								<Button color="danger" onClick={handleRemove}>
 									<FaMinus />
 								</Button>
 								<p className="text-4xl">{quantity}</p>
-								<Button
-									color="primary"
-									onClick={() => {
-										setQuantity((prev) => {
-											if (!productQuery.data) return prev;
-											if (
-												prev < productQuery.data.stock
-											) {
-												return prev + 1;
-											}
-											return prev;
-										});
-									}}
-								>
+								<Button color="primary" onClick={handleAdd}>
 									<FaPlus />
 								</Button>
 							</div>
 							<div className="flex gap-5 items-center">
 								<Button
-									onClick={(e) => {
-										if (!state.user) {
-											router.push("/auth/login");
-										} else {
-											dispatch({
-												type: "add_product_to_cart",
-												payload: {
-													product: productQuery.data,
-													quantity,
-												},
-											});
-										}
-									}}
+									onClick={handleAddToCart}
 									startContent={<FaCartShopping />}
 								>
 									Add to cart
