@@ -1,8 +1,9 @@
 "use client";
-import Cart, { TCart } from "@/components/cards/Cart";
+import Cart from "@/components/cards/Cart";
 import { IProduct } from "@/components/sections/ProductsSection";
 import { context } from "@/context/ApplicationContext";
 import { useTitle } from "@/hooks/useTitle";
+import { ICartB } from "@/types/Cart";
 import { axiosSecuredInstance } from "@/utils/axios";
 import {
 	Button,
@@ -19,9 +20,10 @@ import { useContext, useMemo } from "react";
 import toast from "react-hot-toast";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useMutation, useQuery } from "react-query";
+import slugify from "slugify";
 
 const CartPage = () => {
-	useTitle("Cart" , true);
+	useTitle("Cart", true);
 	const { dispatch, state } = useContext(context);
 	const rows = useMemo(() => {
 		return Object.keys(state.cart || {}).map((key, index) => {
@@ -40,7 +42,19 @@ const CartPage = () => {
 							className={"object-cover h-[50px] w-[50px]"}
 						/>
 					</TableCell>
-					<TableCell>{product.title}</TableCell>
+					<TableCell>
+						<div className="flex justify-between items-center h-full">
+							<span>{product.title}</span>{" "}
+							<Link
+								href={`/products/${slugify(product.title)}-${
+									product._id
+								}`}
+								className="text-blue-500"
+							>
+								See details
+							</Link>
+						</div>
+					</TableCell>
 					<TableCell>${product.price}</TableCell>
 					<TableCell>{quantity}</TableCell>
 					<TableCell>${product.price * quantity}</TableCell>
@@ -94,6 +108,12 @@ const CartPage = () => {
 				cart
 			);
 		},
+		onError: (error) => {
+			console.error("purchase", error);
+		},
+		onSuccess: () => {
+			dispatch({ type: "clear_cart" });
+		},
 	});
 	const handlePurchase = async () => {
 		const products = Object.keys(state.cart || {}).map((key) => {
@@ -134,11 +154,11 @@ const CartPage = () => {
 		const res = await axiosSecuredInstance.get(
 			`/users/${state.user._id}/carts`
 		);
-		return res.data.carts as TCart[];
+		return res.data.carts as ICartB[];
 	};
 
 	const cartsQuery = useQuery({
-		queryKey: ["carts", state.user?._id],
+		queryKey: ["carts", state.user?._id, state.cart, mutation.isSuccess],
 		queryFn: getCarts,
 	});
 
@@ -184,8 +204,9 @@ const CartPage = () => {
 				) : null}
 			</div>
 
+			<h2 className="my-8 text-center text-3xl font-bold">Your carts</h2>
 			{cartsQuery.data ? (
-				<div>
+				<div className="grid grid-cols-3 mx-auto gap-8 w-fit">
 					{cartsQuery.data.map((cart, index) => {
 						return <Cart key={index} cart={cart} />;
 					})}

@@ -12,6 +12,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { useQuery } from "react-query";
 import classNames from "classnames";
+import toast from "react-hot-toast";
 
 const Product = () => {
 	const params = useParams();
@@ -42,6 +43,15 @@ const Product = () => {
 		if (!state.user) {
 			router.push("/auth/login");
 		} else {
+			if (
+				state.cart &&
+				productQuery.data &&
+				state.cart[productQuery.data._id]
+			) {
+				toast.success("cart was updated successfully");
+			} else {
+				toast.success("Product added to cart successfully");
+			}
 			dispatch({
 				type: "add_product_to_cart",
 				payload: {

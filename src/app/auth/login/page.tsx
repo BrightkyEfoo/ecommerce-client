@@ -60,7 +60,7 @@ const LoginPage = () => {
 		onSuccess: (data) => {
 			toast.success("Login successful! Redirecting...");
 			localStorage.setItem("user", JSON.stringify(data.user));
-			localStorage.setItem("token", JSON.stringify(data.token));
+			localStorage.setItem("token", data.token);
 			dispatch({ type: "set_user", payload: data.user });
 			router.push("/");
 		},
